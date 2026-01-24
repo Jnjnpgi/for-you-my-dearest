@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To My Dearest - Jnjn</title>
+<link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+  /* --- GLOBAL SETTINGS --- */
+  :root {
+    --primary-pink: #ff4757;
+    --secondary-pink: #ff6b81;
+    --deep-pink: #b71540;
+    --soft-white: #fffdf0;
+  }
+
+  body {
+    margin: 0; height: 100vh; overflow: hidden;
+    background: linear-gradient(to bottom, #a18cd1 0%, #fbc2eb 100%);
+    font-family: 'Lora', serif;
+    display: flex; justify-content: center; align-items: center;
+    touch-action: none;
+  }
+
+  /* --- CUTE ROMANTIC MUSIC BUTTON --- */
+  #music-btn {
+    position: fixed; top: 25px; right: 25px; z-index: 10001;
+    width: 55px; height: 55px; background: white;
+    border: 3px solid var(--secondary-pink); border-radius: 50%;
+    display: none; justify-content: center; align-items: center;
+    cursor: pointer; box-shadow: 0 0 15px rgba(255, 107, 129, 0.4);
+    font-size: 26px; transition: all 0.3s ease;
+    animation: heartbeat 2s infinite ease-in-out;
+  }
+  @keyframes heartbeat {
+    0%, 30%, 100% { transform: scale(1); }
+    15%, 45% { transform: scale(1.15); }
+  }
+
+  /* --- 1. SETUP SCREEN --- */
+  #setup-screen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: white; z-index: 9999;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; transition: opacity 0.5s ease;
+  }
+  .setup-card {
+    background: white; padding: 40px 30px; border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    display: flex; flex-direction: column; align-items: center;
+    border: 1px solid #ffdde1; width: 300px;
+  }
+  h2 { font-family: 'Parisienne', cursive; color: var(--primary-pink); margin: 0 0 10px 0; font-size: 36px; }
+  
+  /* FIXED UPLOAD CIRCLE */
+  .upload-circle {
+    width: 130px; height: 130px; background: #fdfdfd; 
+    border: 3px dashed #ffb8b8; border-radius: 50%; 
+    display: flex; justify-content: center; align-items: center;
+    cursor: pointer; overflow: hidden; position: relative; margin-bottom: 25px;
+    box-sizing: border-box; /* Fixes the spacing issue */
+    padding: 0; transition: border 0.3s ease;
+  }
+  #preview-img { 
+    width: 100%; height: 100%; object-fit: cover; 
+    display: none; z-index: 10; position: absolute; top: 0; left: 0;
+  }
+  .upload-icon { font-size: 30px; color: #ffb8b8; }
+
+  .btn-start {
+    background: linear-gradient(to right, var(--primary-pink), var(--secondary-pink));
+    color: white; border: none; padding: 14px 45px; font-size: 18px; border-radius: 40px; 
+    cursor: pointer; font-weight: bold;
+  }
+
+  /* --- SCENE 1: JOURNEY --- */
+  .scene-journey { position: absolute; width: 100%; height: 100vh; overflow: hidden; z-index: 10; transition: opacity 0.8s ease; }
+  .paused * { animation-play-state: paused !important; }
+  .fluffy-cloud { position: absolute; background: #fff; border-radius: 100px; opacity: 0.8; filter: blur(4px); animation: moveClouds linear infinite; }
+  .c1 { width: 120px; height: 40px; top: 15%; animation-duration: 35s; }
+  .c2 { width: 100px; height: 35px; top: 30%; animation-duration: 25s; }
+  @keyframes moveClouds { from { left: -300px; } to { left: 110vw; } }
+
+  .ground-layer { position: absolute; bottom: 80px; width: 100%; display: flex; justify-content: space-between; padding: 0 10%; box-sizing: border-box; z-index: 5; }
+  .house-group { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; position: relative; min-width: 100px; }
+  .house-emoji { font-size: 60px; animation: bounce 2s infinite ease-in-out; }
+  .label { background: white; padding: 5px 12px; border-radius: 20px; color: #d63031; font-weight: bold; font-size: 11px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-top: 5px; }
+  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+  .scene-bubble { width: 75px; height: 75px; background: white; border-radius: 50%; box-shadow: 0 8px 20px rgba(0,0,0,0.2); display: none; overflow: hidden; border: 3px solid white; margin-bottom: 10px; animation: floatBubble 3s ease-in-out infinite; }
+  #scene-photo-img { width: 100%; height: 100%; object-fit: cover; }
+  @keyframes floatBubble { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+  .cute-flyer { position: absolute; width: 45px; height: 32px; background: var(--primary-pink); border-radius: 4px; z-index: 50; bottom: 150px; left: 80px; opacity: 0; display: flex; justify-content: center; align-items: center; }
+  .heart-on-flyer { color: white; font-size: 14px; margin-top: 5px; z-index: 2; }
+  .wings { position: absolute; width: 60px; height: 12px; background: rgba(255, 255, 255, 0.8); border-radius: 50%; top: 10px; left: -8px; z-index: -1; animation: flapWings 0.15s infinite alternate; }
+  @keyframes flapWings { from { transform: rotateX(0); } to { transform: rotateX(60deg); } }
+  
+  .fly-now { opacity: 1; animation: flightPath 4.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards; }
+  @keyframes flightPath {
+    0% { left: 10%; bottom: 150px; transform: scale(0.5); }
+    50% { bottom: 60%; transform: scale(1.4) rotate(-5deg); } 
+    100% { left: 80%; bottom: 150px; transform: scale(1) rotate(0deg); }
+  }
+  .grass { position: absolute; bottom: 0; width: 100%; height: 100px; background: #a8e6cf; border-radius: 50% 50% 0 0 / 30px 30px 0 0; z-index: 4; }
+  .trail-heart { position: absolute; font-size: 18px; color: var(--secondary-pink); animation: fadeUp 1s forwards; pointer-events: none; }
+  @keyframes fadeUp { to { opacity: 0; transform: translateY(-30px) scale(1.5); } }
+
+  /* --- TRANSITION --- */
+  #heart-flash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 150; display: flex; justify-content: center; align-items: center; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
+  .flash-heart-shape { font-size: 50px; color: rgba(255, 182, 193, 0.7); transform: scale(0); transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  .flash-active { opacity: 1 !important; }
+  .flash-active .flash-heart-shape { transform: scale(35); }
+
+  /* --- SCENE 2: REVEAL --- */
+  .scene-reveal { position: absolute; width: 100%; height: 100vh; display: none; justify-content: center; align-items: center; z-index: 60; opacity: 0; background: radial-gradient(circle, #fff5f8 0%, #ffdee9 100%); transition: opacity 1s ease; }
+  .falling-element { position: absolute; pointer-events: none; z-index: 51; top: -50px; animation: rainEffect linear infinite; }
+  @keyframes rainEffect { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+
+  .big-envelope { position: relative; width: 90%; max-width: 350px; height: 220px; background: #c0392b; border-radius: 0 0 10px 10px; box-shadow: 0 20px 60px rgba(255, 71, 87, 0.2); display: flex; justify-content: center; z-index: 70; transform: translateY(60px); transition: transform 0.8s ease; }
+  .lid { position: absolute; top: 0; width: 100%; height: 0; border-left: 175px solid transparent; border-right: 175px solid transparent; border-top: 130px solid #d63031; transform-origin: top; transition: transform 0.8s ease 0.3s; z-index: 50; }
+  .wax-seal { position: absolute; top: -65px; left: 50%; transform: translateX(-50%); width: 45px; height: 45px; background: radial-gradient(circle at 30% 30%, #f1c40f, #b7950b); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #927305; font-size: 20px; transition: opacity 0.3s ease; z-index: 60; }
+  .paper { position: absolute; bottom: 10px; width: 92%; height: 80px; background: var(--soft-white); border-radius: 5px; z-index: 20; display: flex; flex-direction: column; padding: 30px 25px; box-sizing: border-box; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); border: 1px solid #e2e2e2; outline: 1px solid #d4af37; outline-offset: -8px; transition: height 1s ease 1s, bottom 1s ease 1s; overflow-y: auto; overflow-x: hidden; }
+  .letter-content { opacity: 0; transition: opacity 0.8s ease 1.8s; display: flex; flex-direction: column; }
+  .header-text { font-family: 'Parisienne', cursive; font-size: 28px; color: #b71540; margin-bottom: 15px; text-align: center; }
+  .body-text { font-size: 16px; color: #222; line-height: 1.7; text-align: left; }
+  .signature { font-family: 'Parisienne', cursive; font-size: 26px; color: #b71540; text-align: right; margin-top: 20px; }
+
+  .btn-flowers { margin: 30px auto 10px auto; background: linear-gradient(to right, #ff4e50, #f9d423); color: white; border: none; padding: 12px 25px; border-radius: 30px; font-family: 'Lora', serif; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(255, 78, 80, 0.3); min-height: 45px; }
+
+  .pocket { position: absolute; bottom: 0; width: 100%; height: 130px; background: #c0392b; z-index: 40; border-radius: 0 0 10px 10px; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 0, 50% 65%, 0 0); }
+  .open .lid { transform: rotateX(180deg); z-index: 10; }
+  .open .wax-seal { opacity: 0; }
+  .open .paper { height: 420px; bottom: 90px; }
+  .open .letter-content { opacity: 1; }
+  .open { transform: translateY(80px); }
+
+  /* --- SCENE 3: GARDEN --- */
+  #scene3 { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, #fff5f7 0%, #ffc0cb 100%); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 200; opacity: 0; transition: opacity 1s ease; }
+  .garden-message-container { z-index: 210; text-align: center; padding: 0 30px; max-width: 500px; margin-bottom: 40px; }
+  .garden-title-main { font-family: 'Lora', serif; font-size: 28px; font-weight: 600; color: var(--deep-pink); margin-bottom: 15px; text-align: center; line-height: 1.3; }
+  .garden-body-text { font-family: 'Lora', serif; font-size: 18px; color: #444; line-height: 1.6; font-style: italic; }
+  .bouquet-wrap { position: relative; width: 220px; height: 250px; z-index: 210; animation: floatingBouquet 4s ease-in-out infinite; display: flex; justify-content: center; align-items: center; }
+  @keyframes floatingBouquet { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+  .bouquet-flowers span { position: absolute; display: block; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); }
+  .flower-sunflower { font-size: 95px; z-index: 5; top: 20px; }
+  .flower-rose-left { font-size: 75px; z-index: 6; top: 60px; left: 10px; transform: rotate(-15deg); }
+  .flower-peony-right { font-size: 80px; z-index: 6; top: 50px; right: 10px; transform: rotate(15deg); }
+  .flower-rose-top { font-size: 65px; z-index: 4; top: -10px; left: 40px; }
+  .flower-peony-top { font-size: 70px; z-index: 4; top: -5px; right: 30px; }
+  .flower-leaves { font-size: 80px; z-index: 2; bottom: 40px; opacity: 0.8; }
+</style>
+</head>
+<body class="paused">
+
+  <audio id="bg-music" loop>
+    <source src="music.mp3.mp3" type="audio/mpeg">
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <div id="music-btn" onclick="toggleMusic()">
+    <span id="music-icon" class="music-icon">💗</span>
+  </div>
+
+  <input type="file" id="file-input" accept="image/*" onchange="loadFile(event)" style="display: none;">
+
+  <div id="setup-screen">
+    <div class="setup-card">
+      <h2>For My Favorite</h2>
+      <p>Upload her favorite photo</p>
+      <div class="upload-circle" id="upload-box" onclick="document.getElementById('file-input').click()">
+        <span class="upload-icon">+</span>
+        <img id="preview-img" src="" alt="">
+      </div>
+      <button class="btn-start" onclick="startAnimation()">Begin Journey</button>
+    </div>
+  </div>
+
+  <div class="scene-journey" id="scene1">
+    <div class="cloud-layer"><div class="fluffy-cloud c1"></div><div class="fluffy-cloud c2"></div></div>
+    <div class="ground-layer">
+      <div class="house-group"><div class="house-emoji">🏠</div><div class="label">Cagayan de Oro</div></div>
+      <div class="house-group">
+        <div class="scene-bubble" id="scene-bubble"><img id="scene-photo-img" src="" alt=""></div>
+        <div class="house-emoji">🏡</div><div class="label">Pampanga</div>
+      </div>
+    </div>
+    <div class="cute-flyer" id="flyer"><div class="heart-on-flyer">❤</div><div class="wings"></div></div>
+    <div class="grass"></div>
+  </div>
+
+  <div id="heart-flash"><div class="flash-heart-shape">❤</div></div>
+
+  <div class="scene-reveal" id="scene2">
+    <div class="big-envelope" id="bigEnv">
+      <div class="lid"></div><div class="wax-seal">❤</div>
+      <div class="paper">
+        <div class="letter-content">
+            <div class="header-text">My Dearest...</div>
+            <div class="body-text">
+              Even though miles separate us, my heart has never been closer to yours. I cherish you more with each passing day, and I can't wait for the day I can hold you close without a screen between us.<br><br>
+              I know sometimes it feels like we're drifting, and I can feel your confusion... I wish I could take away the distance, the doubts, and the moments that make you question us. <br><br>
+              I'm sorry for the times you haven't felt as special as you truly are. The miles between us sometimes steal my words, but never my love.<br><br>
+              Happy Birthday and Happy Valentine's Day.
+            </div>
+           <div class="header-text">I love you.</div>
+            <div class="signature">- Jnjn</div>
+            <button class="btn-flowers" onclick="showScene3()">For you</button>
+        </div>
+      </div>
+      <div class="pocket"></div>
+    </div>
+  </div>
+
+  <div id="scene3">
+    <div id="flower-rain-3" style="position:absolute; width:100%; height:100%; top:0; left:0; pointer-events:none;"></div>
+    <div class="garden-message-container">
+        <div class="garden-title-main">A bouquet of your favorites.</div>
+        <div class="garden-body-text">If I could, I’d give you flowers and watch you smile as I tell you how deeply I love you.</div>
+    </div>
+    <div class="bouquet-wrap">
+        <div class="bouquet-flowers">
+            <span class="flower-leaves">🌿</span><span class="flower-rose-top">🌹</span><span class="flower-peony-top">🌸</span><span class="flower-sunflower">🌻</span><span class="flower-rose-left">🌹</span><span class="flower-peony-right">🌸</span>
+        </div>
+    </div>
+  </div>
+
+<script>
+  const audio = document.getElementById('bg-music');
+  const mBtn = document.getElementById('music-btn');
+  const mIcon = document.getElementById('music-icon');
+
+  function toggleMusic() {
+    if (audio.paused) { 
+        audio.play(); 
+        mIcon.innerHTML = "💗"; 
+        mBtn.style.animation = "heartbeat 2s infinite ease-in-out";
+    } else { 
+        audio.pause(); 
+        mIcon.innerHTML = "🖤"; 
+        mBtn.style.animation = "none";
+    }
+  }
+
+  function loadFile(event) {
+    if (event.target.files && event.target.files[0]) {
+        const url = URL.createObjectURL(event.target.files[0]);
+        const preview = document.getElementById('preview-img');
+        const uploadBox = document.getElementById('upload-box');
+        
+        preview.src = url;
+        preview.style.display = "block";
+        
+        // FIX: Remove dashed border and use solid pink when photo is added
+        uploadBox.style.borderStyle = "solid";
+        uploadBox.style.borderColor = "#ff4757";
+
+        document.getElementById('scene-photo-img').src = url;
+        document.getElementById('scene-bubble').style.display = "flex"; 
+    }
+  }
+
+  function startAnimation() {
+    audio.play().then(() => {
+        mBtn.style.display = "flex";
+    }).catch(e => {
+        mBtn.style.display = "flex";
+        mIcon.innerHTML = "🖤";
+        mBtn.style.animation = "none";
+    });
+
+    document.body.classList.remove('paused');
+    document.getElementById('setup-screen').style.opacity = '0';
+    setTimeout(() => document.getElementById('setup-screen').style.display = 'none', 500);
+
+    const flyer = document.getElementById('flyer');
+    const flash = document.getElementById('heart-flash');
+    flyer.classList.add('fly-now');
+
+    let trail = setInterval(() => {
+      const rect = flyer.getBoundingClientRect();
+      const h = document.createElement('div');
+      h.innerHTML = '❤'; h.className = 'trail-heart';
+      h.style.left = rect.left + 15 + 'px'; h.style.top = rect.top + 15 + 'px';
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 1000);
+    }, 150);
+
+    setTimeout(() => { clearInterval(trail); flash.classList.add('flash-active'); }, 4200);
+    setTimeout(() => {
+      document.getElementById('scene1').style.display = 'none';
+      const s2 = document.getElementById('scene2');
+      s2.style.display = 'flex';
+      setTimeout(() => s2.style.opacity = '1', 50);
+      startRain('scene2', 120, ['❤', '🌸', '💖', '💕']);
+    }, 4800);
+    setTimeout(() => { flash.style.opacity = '0'; setTimeout(() => flash.style.display = 'none', 1000); }, 5500);
+    setTimeout(() => { document.getElementById('bigEnv').classList.add('open'); }, 6500);
+  }
+
+  function startRain(containerId, speed, elements) {
+    const container = document.getElementById(containerId);
+    setInterval(() => {
+        const el = document.createElement('div');
+        el.className = 'falling-element';
+        el.innerHTML = elements[Math.floor(Math.random() * elements.length)];
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.fontSize = (Math.random() * 20 + 15) + 'px';
+        el.style.animationDuration = (Math.random() * 2 + 3) + 's';
+        el.style.color = '#ff4757';
+        container.appendChild(el);
+        setTimeout(() => el.remove(), 5000);
+    }, speed);
+  }
+
+  function showScene3() {
+    const s2 = document.getElementById('scene2');
+    const s3 = document.getElementById('scene3');
+    s2.style.opacity = '0';
+    setTimeout(() => {
+        s2.style.display = 'none';
+        s3.style.display = 'flex';
+        setTimeout(() => s3.style.opacity = '1', 50);
+        startRain('flower-rain-3', 100, ['🌹', '🌻', '🌸', '✨']);
+    }, 1000);
+  }
+</script>
+</body>
+</html>
