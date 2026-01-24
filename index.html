@@ -53,14 +53,12 @@
   }
   h2 { font-family: 'Parisienne', cursive; color: var(--primary-pink); margin: 0 0 10px 0; font-size: 36px; }
   
-  /* FIXED UPLOAD CIRCLE */
   .upload-circle {
     width: 130px; height: 130px; background: #fdfdfd; 
     border: 3px dashed #ffb8b8; border-radius: 50%; 
     display: flex; justify-content: center; align-items: center;
     cursor: pointer; overflow: hidden; position: relative; margin-bottom: 25px;
-    box-sizing: border-box; /* Fixes the spacing issue */
-    padding: 0; transition: border 0.3s ease;
+    box-sizing: border-box; padding: 0; transition: border 0.3s ease;
   }
   #preview-img { 
     width: 100%; height: 100%; object-fit: cover; 
@@ -126,7 +124,6 @@
   .header-text { font-family: 'Parisienne', cursive; font-size: 28px; color: #b71540; margin-bottom: 15px; text-align: center; }
   .body-text { font-size: 16px; color: #222; line-height: 1.7; text-align: left; }
   .signature { font-family: 'Parisienne', cursive; font-size: 26px; color: #b71540; text-align: right; margin-top: 20px; }
-
   .btn-flowers { margin: 30px auto 10px auto; background: linear-gradient(to right, #ff4e50, #f9d423); color: white; border: none; padding: 12px 25px; border-radius: 30px; font-family: 'Lora', serif; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(255, 78, 80, 0.3); min-height: 45px; }
 
   .pocket { position: absolute; bottom: 0; width: 100%; height: 130px; background: #c0392b; z-index: 40; border-radius: 0 0 10px 10px; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 0, 50% 65%, 0 0); }
@@ -138,18 +135,34 @@
 
   /* --- SCENE 3: GARDEN --- */
   #scene3 { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, #fff5f7 0%, #ffc0cb 100%); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 200; opacity: 0; transition: opacity 1s ease; }
-  .garden-message-container { z-index: 210; text-align: center; padding: 0 30px; max-width: 500px; margin-bottom: 40px; }
+  .garden-message-container { z-index: 210; text-align: center; padding: 0 30px; max-width: 500px; margin-bottom: 20px; }
   .garden-title-main { font-family: 'Lora', serif; font-size: 28px; font-weight: 600; color: var(--deep-pink); margin-bottom: 15px; text-align: center; line-height: 1.3; }
   .garden-body-text { font-family: 'Lora', serif; font-size: 18px; color: #444; line-height: 1.6; font-style: italic; }
-  .bouquet-wrap { position: relative; width: 220px; height: 250px; z-index: 210; animation: floatingBouquet 4s ease-in-out infinite; display: flex; justify-content: center; align-items: center; }
-  @keyframes floatingBouquet { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-  .bouquet-flowers span { position: absolute; display: block; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); }
-  .flower-sunflower { font-size: 95px; z-index: 5; top: 20px; }
-  .flower-rose-left { font-size: 75px; z-index: 6; top: 60px; left: 10px; transform: rotate(-15deg); }
-  .flower-peony-right { font-size: 80px; z-index: 6; top: 50px; right: 10px; transform: rotate(15deg); }
-  .flower-rose-top { font-size: 65px; z-index: 4; top: -10px; left: 40px; }
-  .flower-peony-top { font-size: 70px; z-index: 4; top: -5px; right: 30px; }
-  .flower-leaves { font-size: 80px; z-index: 2; bottom: 40px; opacity: 0.8; }
+
+  .flower-cluster {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    z-index: 210;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: floatingCluster 4s ease-in-out infinite;
+  }
+  @keyframes floatingCluster { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+  .flower-layers { position: relative; width: 100%; height: 100%; }
+  .flower-layers span { position: absolute; display: block; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); }
+
+  /* Flowers */
+  .f-sunflower { font-size: 110px; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 5; }
+  .f-rose-top { font-size: 75px; top: 0px; left: 50%; transform: translateX(-50%); z-index: 4; }
+  .f-rose-l { font-size: 75px; top: 50%; left: 10px; transform: translateY(-50%) rotate(-15deg); z-index: 6; }
+  .f-rose-br { font-size: 75px; bottom: 10px; right: 30px; z-index: 7; }
+  .f-peony-tr { font-size: 85px; top: 20px; right: 20px; z-index: 4; }
+  .f-peony-r { font-size: 85px; top: 50%; right: 5px; transform: translateY(-50%) rotate(15deg); z-index: 6; }
+  .f-peony-bl { font-size: 80px; bottom: 10px; left: 30px; z-index: 7; }
+
 </style>
 </head>
 <body class="paused">
@@ -219,9 +232,15 @@
         <div class="garden-title-main">A bouquet of your favorites.</div>
         <div class="garden-body-text">If I could, I’d give you flowers and watch you smile as I tell you how deeply I love you.</div>
     </div>
-    <div class="bouquet-wrap">
-        <div class="bouquet-flowers">
-            <span class="flower-leaves">🌿</span><span class="flower-rose-top">🌹</span><span class="flower-peony-top">🌸</span><span class="flower-sunflower">🌻</span><span class="flower-rose-left">🌹</span><span class="flower-peony-right">🌸</span>
+    <div class="flower-cluster">
+        <div class="flower-layers">
+            <span class="f-rose-top">🌹</span>
+            <span class="f-peony-tr">🌸</span>
+            <span class="f-rose-l">🌹</span>
+            <span class="f-peony-r">🌸</span>
+            <span class="f-sunflower">🌻</span>
+            <span class="f-peony-bl">🌸</span>
+            <span class="f-rose-br">🌹</span>
         </div>
     </div>
   </div>
@@ -248,14 +267,10 @@
         const url = URL.createObjectURL(event.target.files[0]);
         const preview = document.getElementById('preview-img');
         const uploadBox = document.getElementById('upload-box');
-        
         preview.src = url;
         preview.style.display = "block";
-        
-        // FIX: Remove dashed border and use solid pink when photo is added
         uploadBox.style.borderStyle = "solid";
         uploadBox.style.borderColor = "#ff4757";
-
         document.getElementById('scene-photo-img').src = url;
         document.getElementById('scene-bubble').style.display = "flex"; 
     }
