@@ -111,7 +111,7 @@
   .flash-active { opacity: 1 !important; }
   .flash-active .flash-heart-shape { transform: scale(35); }
 
-  /* --- SCENE 2: REVEAL --- */
+  /* --- SCENE 2: LETTER REVEAL --- */
   .scene-reveal { position: absolute; width: 100%; height: 100vh; display: none; justify-content: center; align-items: center; z-index: 60; opacity: 0; background: radial-gradient(circle, #fff5f8 0%, #ffdee9 100%); transition: opacity 1s ease; }
   .falling-element { position: absolute; pointer-events: none; z-index: 51; top: -50px; animation: rainEffect linear infinite; }
   @keyframes rainEffect { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
@@ -140,13 +140,8 @@
   .garden-body-text { font-family: 'Lora', serif; font-size: 18px; color: #444; line-height: 1.6; font-style: italic; }
 
   .flower-cluster {
-    position: relative;
-    width: 250px;
-    height: 250px;
-    z-index: 210;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative; width: 250px; height: 250px; z-index: 210;
+    display: flex; align-items: center; justify-content: center;
     animation: floatingCluster 4s ease-in-out infinite;
   }
   @keyframes floatingCluster { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
@@ -154,7 +149,6 @@
   .flower-layers { position: relative; width: 100%; height: 100%; }
   .flower-layers span { position: absolute; display: block; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); }
 
-  /* Flowers */
   .f-sunflower { font-size: 110px; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 5; }
   .f-rose-top { font-size: 75px; top: 0px; left: 50%; transform: translateX(-50%); z-index: 4; }
   .f-rose-l { font-size: 75px; top: 50%; left: 10px; transform: translateY(-50%) rotate(-15deg); z-index: 6; }
@@ -163,12 +157,66 @@
   .f-peony-r { font-size: 85px; top: 50%; right: 5px; transform: translateY(-50%) rotate(15deg); z-index: 6; }
   .f-peony-bl { font-size: 80px; bottom: 10px; left: 30px; z-index: 7; }
 
+  /* Tiny Labels Positioning */
+  .btn-tiny-label {
+    position: absolute; bottom: 30px; right: 30px;
+    background: rgba(255, 255, 255, 0.5); border: 1px solid var(--secondary-pink);
+    padding: 8px 15px; font-size: 11px; border-radius: 20px;
+    color: var(--deep-pink); cursor: pointer; z-index: 315;
+    font-family: 'Lora', serif; transition: all 0.3s;
+  }
+
+  /* BACK ARROW BUTTON */
+  .btn-tiny-replay {
+    position: absolute; 
+    bottom: 50px; 
+    right: 30px;
+    background: rgba(255, 255, 255, 0.7); 
+    border: 1.5px solid var(--deep-pink);
+    padding: 8px 14px; 
+    font-size: 18px; 
+    font-weight: bold;
+    border-radius: 50%; 
+    color: var(--deep-pink); 
+    cursor: pointer; 
+    z-index: 1000; 
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    display: flex; justify-content: center; align-items: center;
+  }
+  .btn-tiny-label:hover, .btn-tiny-replay:hover { background: white; transform: scale(1.1); }
+
+  /* --- SCENE 4: SUNSET FINALE --- */
+  #scene4 {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #feada6 100%);
+    display: none; flex-direction: column;
+    align-items: center; justify-content: center; z-index: 300;
+    opacity: 0; transition: opacity 1s ease; padding: 20px; text-align: center;
+  }
+  .highlight-header {
+    background: var(--primary-pink); color: white; padding: 12px 25px;
+    border-radius: 12px; display: inline-block; margin-bottom: 25px;
+    font-size: 26px; font-weight: 600; box-shadow: 0 5px 20px rgba(255, 71, 87, 0.4);
+    z-index: 310;
+  }
+  .s4-body { 
+    font-size: 21px; color: #444; margin-bottom: 35px; 
+    max-width: 85%; line-height: 1.8; z-index: 310;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+  }
+  .highlight-footer {
+    font-family: 'Lora', serif; font-size: 28px; font-weight: 700;
+    color: var(--deep-pink); z-index: 310;
+    text-shadow: 2px 2px 8px rgba(255,255,255,0.6);
+  }
+
 </style>
 </head>
 <body class="paused">
 
+  <!-- MUSIC ELEMENT -->
   <audio id="bg-music" loop>
-    <source src="music.mp3.mp3" type="audio/mpeg">
     <source src="music.mp3" type="audio/mpeg">
   </audio>
 
@@ -178,6 +226,7 @@
 
   <input type="file" id="file-input" accept="image/*" onchange="loadFile(event)" style="display: none;">
 
+  <!-- START / SETUP SCREEN -->
   <div id="setup-screen">
     <div class="setup-card">
       <h2>For My Favorite</h2>
@@ -190,6 +239,7 @@
     </div>
   </div>
 
+  <!-- SCENE 1 -->
   <div class="scene-journey" id="scene1">
     <div class="cloud-layer"><div class="fluffy-cloud c1"></div><div class="fluffy-cloud c2"></div></div>
     <div class="ground-layer">
@@ -205,6 +255,7 @@
 
   <div id="heart-flash"><div class="flash-heart-shape">❤</div></div>
 
+  <!-- SCENE 2 -->
   <div class="scene-reveal" id="scene2">
     <div class="big-envelope" id="bigEnv">
       <div class="lid"></div><div class="wax-seal">❤</div>
@@ -226,6 +277,7 @@
     </div>
   </div>
 
+  <!-- SCENE 3 -->
   <div id="scene3">
     <div id="flower-rain-3" style="position:absolute; width:100%; height:100%; top:0; left:0; pointer-events:none;"></div>
     <div class="garden-message-container">
@@ -243,48 +295,49 @@
             <span class="f-rose-br">🌹</span>
         </div>
     </div>
+    <button class="btn-tiny-label" onclick="showScene4()">Add label</button>
+  </div>
+
+  <!-- SCENE 4 -->
+  <div id="scene4">
+    <div id="flower-rain-4" style="position:absolute; width:100%; height:100%; top:0; left:0; pointer-events:none; z-index: 305;"></div>
+    <div class="highlight-header">Why you're here?</div>
+    <div class="s4-body">
+        sabi ko dun "add label" ah? bat mo pinindot?<br>
+        lalagyan mo na ba label??? hello???<br><br>
+        Just kidding.
+    </div>
+    <div class="highlight-footer">I love you fav mean girl</div>
+    <button class="btn-tiny-replay" onclick="restartExperience()">↩</button>
   </div>
 
 <script>
   const audio = document.getElementById('bg-music');
   const mBtn = document.getElementById('music-btn');
   const mIcon = document.getElementById('music-icon');
+  let rainIntervals = [];
 
   function toggleMusic() {
-    if (audio.paused) { 
-        audio.play(); 
-        mIcon.innerHTML = "💗"; 
-        mBtn.style.animation = "heartbeat 2s infinite ease-in-out";
-    } else { 
-        audio.pause(); 
-        mIcon.innerHTML = "🖤"; 
-        mBtn.style.animation = "none";
-    }
+    if (audio.paused) { audio.play(); mIcon.innerHTML = "💗"; mBtn.style.animation = "heartbeat 2s infinite ease-in-out"; } 
+    else { audio.pause(); mIcon.innerHTML = "🖤"; mBtn.style.animation = "none"; }
   }
 
   function loadFile(event) {
     if (event.target.files && event.target.files[0]) {
         const url = URL.createObjectURL(event.target.files[0]);
-        const preview = document.getElementById('preview-img');
-        const uploadBox = document.getElementById('upload-box');
-        preview.src = url;
-        preview.style.display = "block";
-        uploadBox.style.borderStyle = "solid";
-        uploadBox.style.borderColor = "#ff4757";
+        document.getElementById('preview-img').src = url;
+        document.getElementById('preview-img').style.display = "block";
+        document.getElementById('upload-box').style.borderStyle = "solid";
+        document.getElementById('upload-box').style.borderColor = "#ff4757";
         document.getElementById('scene-photo-img').src = url;
         document.getElementById('scene-bubble').style.display = "flex"; 
     }
   }
 
   function startAnimation() {
-    audio.play().then(() => {
-        mBtn.style.display = "flex";
-    }).catch(e => {
-        mBtn.style.display = "flex";
-        mIcon.innerHTML = "🖤";
-        mBtn.style.animation = "none";
-    });
-
+    // Attempt music start
+    audio.play().then(() => { mBtn.style.display = "flex"; }).catch(e => { mBtn.style.display = "flex"; });
+    
     document.body.classList.remove('paused');
     document.getElementById('setup-screen').style.opacity = '0';
     setTimeout(() => document.getElementById('setup-screen').style.display = 'none', 500);
@@ -316,7 +369,7 @@
 
   function startRain(containerId, speed, elements) {
     const container = document.getElementById(containerId);
-    setInterval(() => {
+    const interval = setInterval(() => {
         const el = document.createElement('div');
         el.className = 'falling-element';
         el.innerHTML = elements[Math.floor(Math.random() * elements.length)];
@@ -327,6 +380,7 @@
         container.appendChild(el);
         setTimeout(() => el.remove(), 5000);
     }, speed);
+    rainIntervals.push(interval);
   }
 
   function showScene3() {
@@ -339,6 +393,49 @@
         setTimeout(() => s3.style.opacity = '1', 50);
         startRain('flower-rain-3', 100, ['🌹', '🌻', '🌸', '✨']);
     }, 1000);
+  }
+
+  function showScene4() {
+    const s3 = document.getElementById('scene3');
+    const s4 = document.getElementById('scene4');
+    s3.style.opacity = '0';
+    setTimeout(() => {
+      s3.style.display = 'none';
+      s4.style.display = 'flex';
+      setTimeout(() => {
+        s4.style.opacity = '1';
+        startRain('flower-rain-4', 180, ['🌻', '🌹', '💖']);
+      }, 50);
+    }, 1000);
+  }
+
+  function restartExperience() {
+    // Clear rain
+    rainIntervals.forEach(id => clearInterval(id));
+    rainIntervals = [];
+
+    // Reset Elements
+    document.getElementById('flyer').classList.remove('fly-now');
+    document.getElementById('bigEnv').classList.remove('open');
+    document.getElementById('heart-flash').classList.remove('flash-active');
+    document.getElementById('heart-flash').style.display = 'flex';
+    document.getElementById('heart-flash').style.opacity = '0';
+
+    const scenes = ['scene1', 'scene2', 'scene3', 'scene4'];
+    scenes.forEach(id => {
+        document.getElementById(id).style.display = 'none';
+        document.getElementById(id).style.opacity = '0';
+    });
+    
+    document.querySelectorAll('.falling-element').forEach(el => el.remove());
+
+    // Back to setup
+    document.getElementById('setup-screen').style.display = 'flex';
+    setTimeout(() => {
+        document.getElementById('setup-screen').style.opacity = '1';
+        document.getElementById('scene1').style.display = 'block';
+        document.getElementById('scene1').style.opacity = '1';
+    }, 50);
   }
 </script>
 </body>
